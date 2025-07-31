@@ -60,4 +60,55 @@ inserted_record = cursor.fetchone()
 
 print(f"ID: {inserted_record[0]}, Name: {inserted_record[1]}, Age: {inserted_record[2]}, Class: {inserted_record[3]}")
 
+
+cursor.execute("""--sql 
+               create table if not exists employees (
+                     id INTEGER PRIMARY KEY,
+                     name TEXT NOT NULL,
+                     position TEXT NOT NULL,
+                     salary REAL NOT NULL
+                )
+               
+               """)
+
+print("Employees table created or already exists")
+
+# insert data into employees table
+
+insert_employees_query = """--sql
+INSERT INTO employees (name, position, salary)
+VALUES (? , ? , ?)
+"""
+
+employee_data_to_insert = [
+    ('John Doe', 'Software Engineer', 75000.00),
+    ('Jane Smith', 'Data Scientist', 80000.00),
+    ('Alice Johnson', 'Project Manager', 90000.00),
+    ('Bob Brown', 'UX Designer', 70000.00),
+    ('Charlie White', 'DevOps Engineer', 85000.00),
+    ('Diana Prince', 'Systems Analyst', 95000.00),
+    ('Bruce Wayne', 'Security Specialist', 100000.00),
+    ('Clark Kent', 'Database Administrator', 78000.00),
+    ('Peter Parker', 'Web Developer', 72000.00),
+    ('Tony Stark', 'AI Engineer', 120000.00)
+]
+
+cursor.executemany(insert_employees_query, employee_data_to_insert)
+connection.commit()
+
+print("Employee data inserted successfully")
+
+# Fetch all employees
+fetch_all_employees_query = """--sql
+SELECT * FROM employees
+"""
+cursor.execute(fetch_all_employees_query)
+all_employees = cursor.fetchall()
+
+for employee in all_employees:
+    print(json.dumps(dict(employee), indent=4))
+    
+print("\n" + "=" * 50)
+
 connection.close()
+
