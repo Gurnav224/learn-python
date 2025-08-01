@@ -3,7 +3,6 @@ import json
 import sqlite3
 import logging
 
-logging.basicConfig(level=logging.INFO)
 
 def create_connection():
     """Create a database connection to the SQLite database."""
@@ -69,6 +68,7 @@ def print_employees(conn):
 
 def main():
     """Main function to demonstrate database operations."""
+    logging.basicConfig(level=logging.INFO)
     if conn := create_connection():
         create_table(conn)
         insert_employee(conn, 'John Doe', 30, 'Engineering')
