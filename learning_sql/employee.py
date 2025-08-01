@@ -1,6 +1,7 @@
 
 import json
 import sqlite3
+import logging
 
 
 def create_connection():
@@ -8,16 +9,16 @@ def create_connection():
     conn = None
     try:
         conn = sqlite3.connect('employee.db')
-        print("Connection established.")
+        logging.info("Connection established.")
     except sqlite3.Error as e:
-        print(f"Error connecting to database: {e}")
+        logging.error(f"Error connecting to database: {e}")
     return conn
 
 def close_connection(conn):
     """Close the database connection."""
     if conn:
         conn.close()
-        print("Connection closed.")
+        logging.info("Connection closed.")
 
 def create_table(conn):
     """Create the employee table if it does not exist."""
@@ -32,10 +33,10 @@ def create_table(conn):
             )
         ''')
         conn.commit()
-        print("Table created successfully.")
+        logging.info("Table created successfully.")
     except sqlite3.Error as e:
-        print(f"Error creating table: {e}")
-        
+        logging.error(f"Error creating table: {e}")
+
 def insert_employee(conn, name, age, department):
     """Insert a new employee into the employee table."""
     try:
@@ -45,10 +46,9 @@ def insert_employee(conn, name, age, department):
             VALUES (?, ?, ?)
         ''', (name, age, department))
         conn.commit()
-        print("Employee inserted successfully.")
+        logging.info("Employee inserted successfully.")
     except sqlite3.Error as e:
-        print(f"Error inserting employee: {e}")
-        
+        logging.error(f"Error inserting employee: {e}")
 
 def print_employees(conn):
     """Print all employees in the employee table."""
@@ -57,19 +57,19 @@ def print_employees(conn):
         cursor.execute('SELECT * FROM employee')
         rows = cursor.fetchall()
         for row in rows:
-            print(json.dumps({
+            logging.info(json.dumps({
                 'id': row[0],
                 'name': row[1],
                 'age': row[2],
                 'department': row[3]
             }, indent=4))
     except sqlite3.Error as e:
-        print(f"Error fetching employees: {e}")         
-        
+        logging.error(f"Error fetching employees: {e}")
+
 def main():
     """Main function to demonstrate database operations."""
-    conn = create_connection()
-    if conn:
+    logging.basicConfig(level=logging.INFO)
+    if conn := create_connection():
         create_table(conn)
         insert_employee(conn, 'John Doe', 30, 'Engineering')
         insert_employee(conn, 'Jane Smith', 25, 'Marketing')
