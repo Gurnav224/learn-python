@@ -47,6 +47,11 @@ def update_video(videos):
         print('Invalid index. Please try again.')
 
 def save_data_helper(videos):
+    try:
+        with open('videos.txt', 'w') as file:
+            json.dump(videos, file)
+    except (IOError, OSError) as e:
+        print(f"Error saving data to file: {e}")
     with open('videos.txt', 'w') as file:
         json.dump(videos, file)
 
