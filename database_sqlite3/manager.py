@@ -28,7 +28,11 @@ def list_videos():
 def update_video(video_id, title, time):
     cursor.execute("UPDATE videos SET title =?, time =? WHERE id =?", (title, time, video_id))
     connection.commit()
-    print("\n Video updated successfully \n")
+    
+    if cursor.rowcount == 0:
+        print(f"\n No video found with ID {video_id}. No update performed. \n")
+    else:
+        print("\n Video updated successfully \n")
 
 def delete_video():
     video_id = int(input("Enter the ID of the video to delete: "))
@@ -69,4 +73,6 @@ def main():
     connection.close()
 
 
-main()
+if __name__ == "__main__":
+    main()
+    
