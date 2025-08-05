@@ -3,7 +3,7 @@ from bson import ObjectId
 
 
 client = MongoClient(
-    "mongodb+srv://neogStudent:L1XJ25xndlzN1JEZ@neog.2swdk.mongodb.net/youtube_manager_db",
+    "",
 )
 
 db = client["youtube_manager_db"]
