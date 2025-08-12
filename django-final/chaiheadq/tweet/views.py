@@ -17,9 +17,12 @@ def tweet_list(request):
     tweets = Tweet.objects.all().order_by("-created_at")
     return render(request, "tweet_list.html", {"tweets": tweets})
 
+import logging
+
 @login_required
 def tweet_create(request):
-    print("FILES:", request.FILES)
+    logger = logging.getLogger(__name__)
+    # logger.debug("FILES: %s", request.FILES)  # Uncomment if you want to log file uploads for debugging
     if request.method == "POST":
         form = TweetForm(request.POST, request.FILES)
         if form.is_valid():
